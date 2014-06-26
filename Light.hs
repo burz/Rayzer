@@ -2,6 +2,8 @@ module Light
 ( Light(..)
 , intensity
 , position
+, diffuse
+, specular
 ) where
 
 import Math.Vector
@@ -30,4 +32,10 @@ position :: Light -> Vector
 position (Directional _ p) = p
 position (Point _ p _) = p
 position (Spot _ p _ _ _ _) = p
-    
+
+diffuse :: Vector -> Vector -> Vector -> Vector -> Vector
+diffuse k n l i = multiply k . multiplyS i $ dotProduct n l
+
+specular :: Vector -> Vector -> Vector -> Vector -> Double -> Vector
+specular k v r i n = multiply k . multiplyS i $ dotProduct v r ** n
+
