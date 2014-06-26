@@ -23,6 +23,8 @@ executable Rayzer
                        Math.Sphere,
                        Math.Intersection,
                        Object,
+                       Group,
                        Camera
   build-depends:       base ==4.6.*,
-                       lens ==4.2.*
+                       lens ==4.2.*,
+                       matrix ==0.3.*

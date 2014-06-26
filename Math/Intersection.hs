@@ -3,6 +3,9 @@
 module Math.Intersection
 ( Intersection
 , intersection
+, distance
+, position
+, normal
 , Intersectable(..)
 ) where
 

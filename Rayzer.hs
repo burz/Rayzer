@@ -1,5 +1,7 @@
 import Math.Sphere
 
+import Group
+
 import Camera
 import Object
 
