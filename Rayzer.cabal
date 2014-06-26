@@ -16,5 +16,11 @@ cabal-version:       >=1.8
 
 executable Rayzer
   main-is:             Rayzer.hs
-  -- other-modules:       
-  build-depends:       base ==4.6.*
+  other-modules:       Math.Vector,
+                       Math.Line,
+                       Math.Ray,
+                       Math.Plane,
+                       Math.Sphere,
+                       Math.Intersection
+  build-depends:       base ==4.6.*,
+                       lens ==4.2.*
