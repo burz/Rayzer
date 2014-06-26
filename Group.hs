@@ -7,7 +7,7 @@ module Group
 ) where
 
 import Math.Ray
-import Math.Intersection
+import Intersection
 import Object
 
 import Data.Matrix

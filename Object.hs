@@ -4,19 +4,24 @@ module Object
 ( Object
 , object
 , obj
+, objMatrl
 ) where
 
 import Math.Sphere
-import Math.Intersection
+import Material
+import Intersection
 
 import Control.Lens
+import Control.Applicative ((<$>))
 
-data Object' a = Object { _obj :: a }
+data Object' a = Object { _obj      :: a
+                        , _objMatrl :: Material
+                        }
 
 makeLenses ''Object'
 
 instance Intersectable a => Intersectable (Object' a) where
-    intersect r o = intersect r $ o ^. obj
+    intersect r o m = (& matrl .~ (o ^. objMatrl)) <$> intersect r (o ^. obj) m
 
 data ObjectType =
       Sphr Sphere
@@ -26,7 +31,7 @@ instance Intersectable ObjectType where
 
 type Object = Object' ObjectType
 
-object :: ObjectType -> Object
-object o = Object { _obj = o
-                  }
-
+object :: ObjectType -> Material -> Object
+object o m = Object { _obj      = o
+                    , _objMatrl = m
+                    }

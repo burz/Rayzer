@@ -10,11 +10,12 @@ module Math.Vector
 , multiply
 , dotProduct
 , crossProduct
+, reflection
 ) where
 
 import Prelude hiding (subtract)
 
-data Vector = Vector Double Double Double
+data Vector = Vector Double Double Double deriving Show
 
 origin = Vector 0 0 0
 
@@ -49,4 +50,7 @@ dotProduct (Vector x y z) (Vector x' y' z')
 crossProduct :: Vector -> Vector -> Vector
 crossProduct (Vector x y z) (Vector x' y' z')
     = Vector (y * z' - z * y') (z * x' - x * z') (x * y' - y * x')
+
+reflection :: Vector -> Vector -> Vector
+reflection v n = subtract v . multiplyS n $ 2 * dotProduct v n
 

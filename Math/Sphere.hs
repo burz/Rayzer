@@ -5,7 +5,7 @@ module Math.Sphere
 
 import Math.Vector
 import Math.Ray
-import Math.Intersection
+import Intersection
 
 import Prelude hiding (subtract)
 

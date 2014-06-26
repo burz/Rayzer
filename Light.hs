@@ -1,25 +1,29 @@
 module Light
 ( Light(..)
-, intensity
-, position
-, diffuse
-, specular
+, lightContributions
 ) where
 
 import Math.Vector
+import Math.Ray
+import Material
+import Intersection
+
+import Control.Lens
 
 import Prelude hiding (subtract)
 
-data Light =
-      Directional Vector Vector
-    | Point Vector Vector Vector
-    | Spot Vector Vector Vector Vector Double Double
+type Attenuation = Vector
 
-calculateDenominator :: Vector -> Vector -> Vector -> Double
+data Light =
+      Directional Color Vector
+    | Point Color Vector Attenuation
+    | Spot Color Vector Attenuation Vector Double Double
+
+calculateDenominator :: Vector -> Attenuation -> Vector -> Double
 calculateDenominator p (Vector kc kl kq) v =
     let d = magnitude $ subtract v p in 1 / (kc + kl * d + kq * d * d)
 
-intensity :: Light -> Vector -> Vector
+intensity :: Light -> Vector -> Color
 intensity (Directional i _) _ = i
 intensity (Point i p k) v = let d = calculateDenominator p k v in multiplyS i d
 intensity (Spot i p k d g a) v = let q = calculateDenominator p k v in
@@ -28,14 +32,26 @@ intensity (Spot i p k d g a) v = let q = calculateDenominator p k v in
         then multiplyS i $ q * dl ** a
         else Vector 0 0 0
 
-position :: Light -> Vector
-position (Directional _ p) = p
-position (Point _ p _) = p
-position (Spot _ p _ _ _ _) = p
+direction :: Light -> Vector -> Vector
+direction (Directional _ d) _ = d
+direction (Point _ p _) v = unit $ subtract p v
+direction (Spot _ p _ _ _ _) v = unit $ subtract p v
 
-diffuse :: Vector -> Vector -> Vector -> Vector -> Vector
-diffuse k n l i = multiply k . multiplyS i $ dotProduct n l
+diffuse' :: Vector -> Vector -> Vector -> Color -> Color
+diffuse' k n l i = multiply k . multiplyS i $ dotProduct n l
 
-specular :: Vector -> Vector -> Vector -> Vector -> Double -> Vector
-specular k v r i n = multiply k . multiplyS i $ dotProduct v r ** n
+specular' :: Vector -> Vector -> Vector -> Color -> Double -> Color
+specular' k v r i n = multiply k . multiplyS i $ dotProduct v r ** n
+
+lightContribution :: Intersection -> Vector -> Light -> Color
+lightContribution i v l = let ity = intensity l v in
+    let dir = direction l v in let n = i ^. normal in
+    let d = diffuse' (i ^. matrl . diffuse) n dir ity in
+    let refl = reflection dir n in
+    let s = specular' (i ^. matrl . specular) v refl ity (i ^. matrl . specularFallOff)
+    in add d s
+
+lightContributions :: Intersection -> Ray -> [Light] -> Color
+lightContributions i (Ray _ v) ls = foldr contrib (i ^. matrl . ambient) ls
+    where contrib l c = add c $ lightContribution i v l
 
