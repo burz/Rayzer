@@ -3,14 +3,16 @@ module Math.Vector
 , origin
 , magnitude
 , unit
-, addScalar
-, multiplyScalar
-, addVector
-, subtractVector
-, multiplyVector
+, addS
+, multiplyS
+, add
+, subtract
+, multiply
 , dotProduct
 , crossProduct
 ) where
+
+import Prelude hiding (subtract)
 
 data Vector = Vector Double Double Double
 
@@ -20,24 +22,24 @@ magnitude :: Vector -> Double
 magnitude (Vector x y z) = sqrt $ x * x + y * y + z * z
 
 unit :: Vector -> Vector
-unit v = let l = magnitude v in multiplyScalar v $ 1 / l
+unit v = let l = magnitude v in multiplyS v $ 1 / l
 
-addScalar :: Vector -> Double -> Vector
-addScalar (Vector x y z) d = Vector (x + d) (y + d) (z + d)
+addS :: Vector -> Double -> Vector
+addS (Vector x y z) d = Vector (x + d) (y + d) (z + d)
 
-multiplyScalar :: Vector -> Double -> Vector
-multiplyScalar (Vector x y z) d = Vector (x * d) (y * d) (z * d)
+multiplyS :: Vector -> Double -> Vector
+multiplyS (Vector x y z) d = Vector (x * d) (y * d) (z * d)
 
-addVector :: Vector -> Vector -> Vector
-addVector (Vector x y z) (Vector x' y' z')
+add :: Vector -> Vector -> Vector
+add (Vector x y z) (Vector x' y' z')
     = Vector (x + x') (y + y') (z + z')
 
-subtractVector :: Vector -> Vector -> Vector
-subtractVector (Vector x y z) (Vector x' y' z')
+subtract :: Vector -> Vector -> Vector
+subtract (Vector x y z) (Vector x' y' z')
     = Vector (x - x') (y - y') (z - z')
 
-multiplyVector :: Vector -> Vector -> Vector
-multiplyVector (Vector x y z) (Vector x' y' z')
+multiply :: Vector -> Vector -> Vector
+multiply (Vector x y z) (Vector x' y' z')
     = Vector (x * x') (y * y') (z * z')
 
 dotProduct :: Vector -> Vector -> Double
