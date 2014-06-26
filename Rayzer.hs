@@ -1,9 +1,6 @@
 import Math.Sphere
 
-import Group
-
-import Camera
-import Object
+import Scene
 
 main = do
     print "loolol"

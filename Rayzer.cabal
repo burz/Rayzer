@@ -24,7 +24,8 @@ executable Rayzer
                        Math.Intersection,
                        Object,
                        Group,
-                       Camera
+                       Camera,
+                       Scene
   build-depends:       base ==4.6.*,
                        lens ==4.2.*,
                        matrix ==0.3.*
