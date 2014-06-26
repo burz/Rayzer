@@ -25,6 +25,7 @@ executable Rayzer
                        Object,
                        Group,
                        Camera,
+                       Light,
                        Scene
   build-depends:       base ==4.6.*,
                        lens ==4.2.*,
