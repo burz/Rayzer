@@ -12,7 +12,7 @@ import Prelude hiding (subtract)
 data Sphere = Sphere Vector Double
 
 instance Intersectable Sphere where
-    intersect (Ray p d) (Sphere p' r) m =
+    intersect (Sphere p' r) m (Ray p d) =
         let d = subtract p p' in
         let b = dotProduct d $ multiplyS d 2 in
         let c = magnitude d ** 2 - r ** 2 in

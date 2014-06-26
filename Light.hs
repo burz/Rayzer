@@ -51,7 +51,8 @@ lightContribution i v l = let ity = intensity l v in
     let s = specular' (i ^. matrl . specular) v refl ity (i ^. matrl . specularFallOff)
     in add d s
 
-lightContributions :: Intersection -> Ray -> [Light] -> Color
-lightContributions i (Ray _ v) ls = foldr contrib (i ^. matrl . ambient) ls
+lightContributions :: Intersection -> Vector -> Color -> [Light] -> Color
+lightContributions i v a ls = foldr contrib base ls
     where contrib l c = add c $ lightContribution i v l
+          base = multiply a $ i ^. matrl . ambient
 

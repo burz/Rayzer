@@ -21,13 +21,13 @@ data Object' a = Object { _obj      :: a
 makeLenses ''Object'
 
 instance Intersectable a => Intersectable (Object' a) where
-    intersect r o m = (& matrl .~ (o ^. objMatrl)) <$> intersect r (o ^. obj) m
+    intersect o m r = (& matrl .~ (o ^. objMatrl)) <$> intersect (o ^. obj) m r
 
 data ObjectType =
       Sphr Sphere
 
 instance Intersectable ObjectType where
-    intersect r (Sphr s) = intersect r s
+    intersect (Sphr s) = intersect s
 
 type Object = Object' ObjectType
 

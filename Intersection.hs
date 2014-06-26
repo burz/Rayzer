@@ -32,5 +32,5 @@ intersection d p n = Intersection { _distance = d
 makeLenses ''Intersection
 
 class Intersectable a where
-    intersect :: Ray -> a -> Double -> Maybe Intersection
+    intersect :: a -> Double -> Ray -> Maybe Intersection
 
