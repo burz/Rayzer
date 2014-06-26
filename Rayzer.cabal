@@ -21,6 +21,8 @@ executable Rayzer
                        Math.Ray,
                        Math.Plane,
                        Math.Sphere,
-                       Math.Intersection
+                       Math.Intersection,
+                       Object,
+                       Camera
   build-depends:       base ==4.6.*,
                        lens ==4.2.*
