@@ -27,7 +27,10 @@ executable Rayzer
                        Group,
                        Camera,
                        Light,
-                       Scene
+                       Scene,
+                       Image
   build-depends:       base ==4.6.*,
                        lens ==4.2.*,
-                       matrix ==0.3.*
+                       matrix ==0.3.*,
+                       JuicyPixels ==3.1.*,
+                       bytestring ==0.10.*
