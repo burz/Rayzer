@@ -1,6 +1,7 @@
-import Scene
-import Camera
-import Image
+import Base.Scene
+import Base.Camera
+import Base.Image
 
 main = do
-    print "loolol"
+    print "lolol"
+

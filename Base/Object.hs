@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Object
+module Base.Object
 ( Object
 , object
 , obj
@@ -8,8 +8,8 @@ module Object
 ) where
 
 import Math.Sphere
-import Material
-import Intersection
+import Base.Material
+import Base.Intersection
 
 import Control.Lens
 import Control.Applicative ((<$>))

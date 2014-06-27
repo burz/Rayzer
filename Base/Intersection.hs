@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Intersection
+module Base.Intersection
 ( Intersection
 , intersection
 , distance
@@ -12,7 +12,7 @@ module Intersection
 
 import Math.Vector
 import Math.Ray
-import Material
+import Base.Material
 
 import Control.Lens
 

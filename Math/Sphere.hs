@@ -5,7 +5,7 @@ module Math.Sphere
 
 import Math.Vector
 import Math.Ray
-import Intersection
+import Base.Intersection
 
 data Sphere = Sphere Vector3 Double
 

@@ -1,12 +1,12 @@
-module Light
+module Base.Light
 ( Light(..)
 , lightContributions
 ) where
 
 import Math.Vector
 import Math.Ray
-import Material
-import Intersection
+import Base.Material
+import Base.Intersection
 
 import Control.Lens
 

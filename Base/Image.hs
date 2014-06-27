@@ -1,12 +1,12 @@
-module Image
+module Base.Image
 ( Image
 , saveToFile
 ) where
 
 import Math.Vector
-import Material
-import Scene
-import Camera
+import Base.Material
+import Base.Scene
+import Base.Camera
 
 import Codec.Picture hiding (Pixel, Image)
 import Data.Word

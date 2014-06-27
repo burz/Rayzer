@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Material
+module Base.Material
 ( Color(..)
 , Material
 , material

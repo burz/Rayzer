@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Camera
+module Base.Camera
 ( Camera
 , camera
 , position
@@ -15,8 +15,8 @@ module Camera
 
 import Math.Vector
 import Math.Ray
-import Material
-import Scene
+import Base.Material
+import Base.Scene
 
 import Control.Lens
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Group
+module Base.Group
 ( Group
 , _End
 , _Parent
@@ -8,8 +8,8 @@ module Group
 
 import Math.Ray
 import Math.Matrix
-import Intersection
-import Object
+import Base.Intersection
+import Base.Object
 
 import Control.Lens
 
