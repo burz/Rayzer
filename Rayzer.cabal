@@ -33,6 +33,5 @@ executable Rayzer
   build-depends:       base ==4.6.*,
                        lens ==4.2.*,
                        vect ==0.4.*,
-                       JuicyPixels ==3.1.*,
-                       bytestring ==0.10.*
+                       JuicyPixels ==3.1.*
 

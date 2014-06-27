@@ -16,6 +16,7 @@ module Math.Vector
 , (*&)
 , (&^)
 , reflect'
+, extract3
 ) where
 
 import Data.Vect.Double
@@ -46,4 +47,7 @@ instance Unit Unit2 Vector2 where
 instance Unit Unit3 Vector3 where
     unit     = mkNormal
     fromUnit = fromNormal
+
+extract3 :: Vector3 -> (Double -> Double -> Double -> a) -> a
+extract3 (Vec3 x y z) f = f x y z
 

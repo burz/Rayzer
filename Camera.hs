@@ -45,7 +45,7 @@ right :: Camera -> Unit3
 right c = (c ^. forward) &^ (c ^. up)
  
 rayThroughPixel :: Camera -> Int -> Int -> Int -> Int -> Ray
-rayThroughPixel c i j w h = let pos = c ^. position in
+rayThroughPixel c w h i j = let pos = c ^. position in
     let p = pos + (c ^. focus) *& (fromUnit $ c ^. forward) in
     let t = tan $ c ^. heightAngle in
     let px = (t * c ^. aspectRatio * c ^. focus) *& fromUnit (right c) in
@@ -56,7 +56,7 @@ rayThroughPixel c i j w h = let pos = c ^. position in
     in Ray pos . unit $ pc + px' + py' - pos
  
 pixelColor :: Scene -> Camera -> Int -> Int -> Int -> Int -> Color
-pixelColor s c i j w h = let r = rayThroughPixel c i j w h in
+pixelColor s c w h i j = let r = rayThroughPixel c i j w h in
     let mi = intersect s (c ^. depth) r in case mi of
         Nothing -> s ^. backgroundColor
         Just i  -> lightContribution s i (c ^. position)
