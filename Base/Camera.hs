@@ -3,6 +3,7 @@
 module Base.Camera
 ( Camera
 , camera
+, defaultCamera
 , position
 , forward
 , up
@@ -38,6 +39,9 @@ camera p f u h a fc d = Camera { _position    = p
                                , _focus       = fc
                                , _depth       = d
                                }
+
+defaultCamera :: Camera
+defaultCamera = camera origin (unit3 0 0 1) (unit3 0 1 0) 0.5 0.5 0.1 100
 
 makeLenses ''Camera
 

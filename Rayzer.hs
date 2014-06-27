@@ -2,6 +2,8 @@ import Base.Scene
 import Base.Camera
 import Base.Image
 
+import SphereScene
+
 main = do
-    print "lolol"
+    save 500 500 5
 

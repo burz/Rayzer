@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Base.Group
-( Group
+( Group(..)
 , _End
 , _Parent
 ) where
