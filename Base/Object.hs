@@ -1,7 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Base.Object
-( Object
+( ObjectType(..)
+, Object
 , object
 , obj
 , objMatrl

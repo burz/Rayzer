@@ -2,18 +2,23 @@
 
 module Base.Group
 ( Group(..)
+, end
 , _End
 , _Parent
 ) where
 
 import Math.Ray
 import Math.Matrix
+import Base.Material
 import Base.Intersection
 import Base.Object
 
 import Control.Lens
 
 data Group = End Object | Parent [Group] Matrix4
+
+end :: ObjectType -> Material -> Group
+end o m = End $ object o m
 
 makePrisms ''Group
 
