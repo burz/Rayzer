@@ -10,11 +10,13 @@ module Camera
 , aspectRatio
 , focus
 , depth
-, rayThroughPixel
+, pixelColor
 ) where
 
 import Math.Vector
 import Math.Ray
+import Material
+import Scene
 
 import Control.Lens
 
@@ -53,3 +55,9 @@ rayThroughPixel c i j w h = let pos = c ^. position in
     let py' = (2 * fromIntegral j / fromIntegral h) *& py
     in Ray pos . unit $ pc + px' + py' - pos
  
+pixelColor :: Scene -> Camera -> Int -> Int -> Int -> Int -> Color
+pixelColor s c i j w h = let r = rayThroughPixel c i j w h in
+    let mi = intersect s (c ^. depth) r in case mi of
+        Nothing -> s ^. backgroundColor
+        Just i  -> lightContribution s i (c ^. position)
+
