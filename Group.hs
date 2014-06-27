@@ -7,13 +7,13 @@ module Group
 ) where
 
 import Math.Ray
+import Math.Matrix
 import Intersection
 import Object
 
-import Data.Matrix
 import Control.Lens
 
-data Group = End Object | Parent [Group] (Matrix Double)
+data Group = End Object | Parent [Group] Matrix4
 
 makePrisms ''Group
 
@@ -25,6 +25,6 @@ intersectClosest r d g (Just i) = let mi = intersect g d r in case mi of
 
 instance Intersectable Group where
     intersect (End o) d r = intersect o d r
-    intersect (Parent gs m) d r = let r' = r -- TODO transform by m
+    intersect (Parent gs m) d r = let r' = r -- TODO transform r
         in foldr (intersectClosest r' d) Nothing gs
 

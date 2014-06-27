@@ -10,49 +10,48 @@ import Intersection
 
 import Control.Lens
 
-import Prelude hiding (subtract)
-
-type Attenuation = Vector
+data Attenuation = Atten Double Double Double
 
 data Light =
-      Directional Color Vector
-    | Point Color Vector Attenuation
-    | Spot Color Vector Attenuation Vector Double Double
+      Directional Color Unit3
+    | Point Color Vector3 Attenuation
+    | Spot Color Vector3 Attenuation Unit3 Double Double
 
-calculateDenominator :: Vector -> Attenuation -> Vector -> Double
-calculateDenominator p (Vector kc kl kq) v =
-    let d = magnitude $ subtract v p in 1 / (kc + kl * d + kq * d * d)
+calculateDenominator :: Vector3 -> Attenuation -> Vector3 -> Double
+calculateDenominator p (Atten kc kl kq) v =
+    let d = len $ v - p in 1 / (kc + kl * d + kq * d * d)
 
-intensity :: Light -> Vector -> Color
+intensity :: Light -> Vector3 -> Color
 intensity (Directional i _) _ = i
-intensity (Point i p k) v = let d = calculateDenominator p k v in multiplyS i d
+intensity (Point i p k) v = calculateDenominator p k v *& i
 intensity (Spot i p k d g a) v = let q = calculateDenominator p k v in
-    let dl = dotProduct d . unit $ subtract v p in
+    let dl = d &. unit (v - p) in
     if dl > cos g
-        then multiplyS i $ q * dl ** a
-        else Vector 0 0 0
+        then q *& dl ** a *& i
+        else vector3 0 0 0
 
-direction :: Light -> Vector -> Vector
+direction :: Light -> Vector3 -> Unit3
 direction (Directional _ d) _ = d
-direction (Point _ p _) v = unit $ subtract p v
-direction (Spot _ p _ _ _ _) v = unit $ subtract p v
+direction (Point _ p _) v = unit $ p - v
+direction (Spot _ p _ _ _ _) v = unit $ p - v
 
-diffuse' :: Vector -> Vector -> Vector -> Color -> Color
-diffuse' k n l i = multiply k . multiplyS i $ dotProduct n l
+diffuse' :: Color -> Unit3 -> Unit3 -> Color -> Color
+diffuse' k n l i = k * ((n &. l) *& i)
 
-specular' :: Vector -> Vector -> Vector -> Color -> Double -> Color
-specular' k v r i n = multiply k . multiplyS i $ dotProduct v r ** n
+specular' :: Color -> Unit3 -> Unit3 -> Color -> Double -> Color
+specular' k v r i n = k * (((v &. r) ** n) *& i)
 
-lightContribution :: Intersection -> Vector -> Light -> Color
+lightContribution :: Intersection -> Vector3 -> Light -> Color
 lightContribution i v l = let ity = intensity l v in
     let dir = direction l v in let n = i ^. normal in
     let d = diffuse' (i ^. matrl . diffuse) n dir ity in
-    let refl = reflection dir n in
-    let s = specular' (i ^. matrl . specular) v refl ity (i ^. matrl . specularFallOff)
-    in add d s
+    let refl = reflect' dir n in
+    let spec = i ^. matrl . specular in
+    let specFall = i ^. matrl . specularFallOff in
+    let s = specular' spec (unit v) refl ity specFall in d + s
 
-lightContributions :: Intersection -> Vector -> Color -> [Light] -> Color
+lightContributions :: Intersection -> Vector3 -> Color -> [Light] -> Color
 lightContributions i v a ls = foldr contrib base ls
-    where contrib l c = add c $ lightContribution i v l
-          base = multiply a $ i ^. matrl . ambient
+    where contrib l c = c + lightContribution i v l
+          base = a * i ^. matrl . ambient
 

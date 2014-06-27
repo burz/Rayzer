@@ -1,56 +1,49 @@
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+
 module Math.Vector
-( Vector(..)
+( Vector2(..)
+, Vector3(..)
+, Unit2(..)
+, Unit3(..)
+, vector2
+, vector3
 , origin
-, magnitude
 , unit
-, addS
-, multiplyS
-, add
-, subtract
-, multiply
-, dotProduct
-, crossProduct
-, reflection
+, fromUnit
+, len
+, (&.)
+, (*&)
+, (&^)
+, reflect'
 ) where
 
-import Prelude hiding (subtract)
+import Data.Vect.Double
+import Data.Vect.Double.Instances
 
-data Vector = Vector Double Double Double deriving Show
+type Vector2 = Vec2
+type Vector3 = Vec3
 
-origin = Vector 0 0 0
+type Unit2 = Normal2
+type Unit3 = Normal3
 
-magnitude :: Vector -> Double
-magnitude (Vector x y z) = sqrt $ x * x + y * y + z * z
+vector2 :: Double -> Double -> Vector2
+vector2 = Vec2
 
-unit :: Vector -> Vector
-unit v = let l = magnitude v in multiplyS v $ 1 / l
+vector3 :: Double -> Double -> Double -> Vector3
+vector3 x y z = mkVec3 (x, y, z)
 
-addS :: Vector -> Double -> Vector
-addS (Vector x y z) d = Vector (x + d) (y + d) (z + d)
+origin = vector3 0 0 0
 
-multiplyS :: Vector -> Double -> Vector
-multiplyS (Vector x y z) d = Vector (x * d) (y * d) (z * d)
+class Unit a b where
+    unit     :: b -> a
+    fromUnit :: a -> b
 
-add :: Vector -> Vector -> Vector
-add (Vector x y z) (Vector x' y' z')
-    = Vector (x + x') (y + y') (z + z')
+instance Unit Unit2 Vector2 where
+    unit     = mkNormal
+    fromUnit = fromNormal
 
-subtract :: Vector -> Vector -> Vector
-subtract (Vector x y z) (Vector x' y' z')
-    = Vector (x - x') (y - y') (z - z')
-
-multiply :: Vector -> Vector -> Vector
-multiply (Vector x y z) (Vector x' y' z')
-    = Vector (x * x') (y * y') (z * z')
-
-dotProduct :: Vector -> Vector -> Double
-dotProduct (Vector x y z) (Vector x' y' z')
-    = x * x' + y * y' + z * z'
-
-crossProduct :: Vector -> Vector -> Vector
-crossProduct (Vector x y z) (Vector x' y' z')
-    = Vector (y * z' - z * y') (z * x' - x * z') (x * y' - y * x')
-
-reflection :: Vector -> Vector -> Vector
-reflection v n = subtract v . multiplyS n $ 2 * dotProduct v n
+instance Unit Unit3 Vector3 where
+    unit     = mkNormal
+    fromUnit = fromNormal
 

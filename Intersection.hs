@@ -17,12 +17,12 @@ import Material
 import Control.Lens
 
 data Intersection = Intersection { _distance :: Double
-                                 , _position :: Vector
-                                 , _normal   :: Vector
+                                 , _position :: Vector3
+                                 , _normal   :: Unit3
                                  , _matrl    :: Material
                                  }
 
-intersection :: Double -> Vector -> Vector -> Intersection
+intersection :: Double -> Vector3 -> Unit3 -> Intersection
 intersection d p n = Intersection { _distance = d
                                   , _position = p
                                   , _normal   = n

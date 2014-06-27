@@ -5,6 +5,6 @@ module Math.Plane
 import Math.Vector
 
 data Plane =
-      PointPlane Vector Vector Vector
-    | DistancePlane Vector Double
+      PointPlane Vector3 Vector3 Vector3
+    | DistancePlane Vector3 Double
 

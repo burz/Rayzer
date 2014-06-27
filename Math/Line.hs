@@ -4,5 +4,5 @@ module Math.Line
 
 import Math.Vector
 
-data Line = Line Vector Vector
+data Line = Line Vector3 Vector3
 

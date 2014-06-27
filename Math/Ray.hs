@@ -5,10 +5,8 @@ module Math.Ray
 
 import Math.Vector
 
-import Prelude hiding (subtract)
+data Ray = Ray Vector3 Unit3
 
-data Ray = Ray Vector Vector
-
-throughPoint :: Vector -> Vector -> Ray
-throughPoint s p = let d = unit $ subtract p s in Ray s d
+throughPoint :: Vector3 -> Vector3 -> Ray
+throughPoint s p = let d = unit $ p - s in Ray s d
 

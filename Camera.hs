@@ -17,18 +17,17 @@ import Math.Vector
 import Math.Ray
 
 import Control.Lens
-import Prelude hiding (subtract)
 
-data Camera = Camera { _position    :: Vector
-                     , _forward     :: Vector
-                     , _up          :: Vector
+data Camera = Camera { _position    :: Vector3
+                     , _forward     :: Unit3
+                     , _up          :: Unit3
                      , _heightAngle :: Double
                      , _aspectRatio :: Double
                      , _focus       :: Double
                      , _depth       :: Double
                      }
 
-camera :: Vector -> Vector -> Vector -> Double -> Double -> Double -> Double -> Camera
+camera :: Vector3 -> Unit3 -> Unit3 -> Double -> Double -> Double -> Double -> Camera
 camera p f u h a fc d = Camera { _position    = p
                                , _forward     = f
                                , _up          = u
@@ -40,17 +39,17 @@ camera p f u h a fc d = Camera { _position    = p
 
 makeLenses ''Camera
 
-right :: Camera -> Vector
-right c = crossProduct (c ^. forward) (c ^. up)
+right :: Camera -> Unit3
+right c = (c ^. forward) &^ (c ^. up)
  
 rayThroughPixel :: Camera -> Int -> Int -> Int -> Int -> Ray
 rayThroughPixel c i j w h = let pos = c ^. position in
-    let p = add pos $ multiplyS (c ^. forward) $ c ^. focus in
+    let p = pos + (c ^. focus) *& (fromUnit $ c ^. forward) in
     let t = tan $ c ^. heightAngle in
-    let px = multiplyS (right c) $ t * c ^. aspectRatio * c ^. focus in
-    let py = multiplyS (c ^. up) $ t * c ^. focus in
-    let pc = subtract p $ subtract px py in
-    let px' = multiplyS px $ 2 * fromIntegral i / fromIntegral w in
-    let py' = multiplyS py $ 2 * fromIntegral j / fromIntegral h
-    in Ray pos . add pc . add px' $ subtract py' pos
+    let px = (t * c ^. aspectRatio * c ^. focus) *& fromUnit (right c) in
+    let py = (t * c ^. focus) *& fromUnit (c ^. up) in
+    let pc = p - px - py in
+    let px' = (2 * fromIntegral i / fromIntegral w) *& px in
+    let py' = (2 * fromIntegral j / fromIntegral h) *& py
+    in Ray pos . unit $ pc + px' + py' - pos
  

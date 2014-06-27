@@ -26,7 +26,7 @@ data Scene = Scene { _group           :: Group
 
 makeLenses ''Scene
 
-lightContribution :: Scene -> Intersection -> Vector -> Color
+lightContribution :: Scene -> Intersection -> Vector3 -> Color
 lightContribution s i v
     = lightContributions i v (s ^. ambientLight) (s ^. lights)
 

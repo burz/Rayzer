@@ -17,6 +17,7 @@ cabal-version:       >=1.8
 executable Rayzer
   main-is:             Rayzer.hs
   other-modules:       Math.Vector,
+                       Math.Matrix,
                        Math.Line,
                        Math.Ray,
                        Math.Plane,
@@ -31,6 +32,7 @@ executable Rayzer
                        Image
   build-depends:       base ==4.6.*,
                        lens ==4.2.*,
-                       matrix ==0.3.*,
+                       vect ==0.4.*,
                        JuicyPixels ==3.1.*,
                        bytestring ==0.10.*
+
